@@ -1,1 +1,6 @@
 flask
+pymupdf
+sentence-transformers
+chromadb
+requests
+jinja2
