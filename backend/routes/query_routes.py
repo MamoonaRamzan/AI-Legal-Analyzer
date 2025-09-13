@@ -1,6 +1,7 @@
 # backend/routes/query_routes.py
 from flask import Blueprint, request, jsonify
 from services import retriever
+import re
 
 query_bp = Blueprint("query", __name__)
 
@@ -30,6 +31,21 @@ def query_contract():
     # Call Groq to generate an answer based on evidence (hits)
     try:
         answer = retriever.generate_with_groq(query, hits)
+
+        # --- Cleanup ---
+        if isinstance(answer, str):
+            # Remove <think> ... </think> completely
+            answer = re.sub(r"<think>.*?</think>", "", answer, flags=re.DOTALL)
+
+            # If model forgot </think>, strip everything from <think> onward
+            answer = re.sub(r"<think>.*", "", answer, flags=re.DOTALL)
+
+            # Remove debug tokens like INSFUFFICIENT_CONTEXT and text after it
+            answer = re.sub(r"INSUFFICIENT_CONTEXT.*", "", answer, flags=re.DOTALL)
+
+            # Trim whitespace/newlines
+            answer = answer.strip()
+
     except Exception as e:
         return jsonify({"error": f"Generation error: {e}"}), 500
 

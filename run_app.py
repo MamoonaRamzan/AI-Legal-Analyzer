@@ -11,6 +11,7 @@ import os
 import re
 import json
 from pathlib import Path
+from flask_cors import CORS
 from flask import Flask, request, jsonify, send_file
 from werkzeug.utils import secure_filename
 
@@ -276,6 +277,7 @@ def build_and_save_report(doc_id: str, clauses, flags):
 
 # --- Flask app & routes ---
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/healthz", methods=["GET"])
 def health():
@@ -283,13 +285,16 @@ def health():
 
 @app.route("/upload", methods=["POST"])
 def upload():
+    print("Upload route hit!")
     f = request.files.get("file")
     if not f:
-        return jsonify({"error": "No file (use form field 'file')"}), 400
+        return jsonify({"success": False, "error": "No file (use form field 'file')"}), 400
+    
     fname = secure_filename(f.filename)
     save_to = UPLOAD_DIR / fname
     f.save(save_to)
-    return jsonify({"message": "uploaded", "filename": fname}), 200
+    
+    return jsonify({"success": True, "filename": fname}), 200
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -355,6 +360,12 @@ def init_sample():
     flags = scan_clauses(clauses)
     report = build_and_save_report(doc_id, clauses, flags)
     return jsonify({"doc_id": doc_id, "num_clauses": len(clauses), "flags": flags, "report_path": report}), 200
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # Catch-all for unexpected errors
+    return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     # run

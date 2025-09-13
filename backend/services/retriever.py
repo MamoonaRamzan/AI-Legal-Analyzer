@@ -61,9 +61,16 @@ def generate_with_groq(query, hits):
     evidence = "\n\n".join(evidence_lines)
 
     system_msg = {
-        "role": "system",
-        "content": "You are a legal assistant. Answer using only the provided evidence blocks. For every factual claim include the clause id in square brackets. If evidence is insufficient, say 'INSUFFICIENT_CONTEXT'."
+    "role": "system",
+    "content": (
+        "You are a legal assistant. "
+        "Answer using ONLY the provided evidence. "
+        "Cite clause ids in square brackets. "
+        "If evidence is insufficient, reply clearly with 'No relevant clause found.' "
+        "Do NOT include hidden reasoning, do NOT use <think> tags."
+    )
     }
+
     user_msg = {
         "role": "user",
         "content": f"QUESTION: {query}\n\nEVIDENCE:\n{evidence}"

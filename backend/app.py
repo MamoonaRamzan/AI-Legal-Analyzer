@@ -5,7 +5,8 @@ from routes.query_routes import query_bp
 import os
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__),
+    CORS(app, resources={r"/*": {"origins": "*"}})
     app.register_blueprint(upload_bp, url_prefix="/upload")
     app.register_blueprint(query_bp, url_prefix="/query")
     # Ensure data directories exist
