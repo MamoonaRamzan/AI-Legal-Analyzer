@@ -19,29 +19,38 @@ export default function Navbar() {
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'bg-slate-950/95 backdrop-blur-xl border-b border-cyan-500/20 shadow-xl shadow-cyan-500/5' 
-          : 'bg-slate-950/80 backdrop-blur-md border-b border-slate-800/50'
-      }`}>
+          ? 'backdrop-blur-xl border-b shadow-xl shadow-blue-600/10' 
+          : 'backdrop-blur-md border-b border-white/10'
+      }`} style={{
+        backgroundColor: isScrolled ? 'rgba(26, 26, 46, 0.95)' : 'rgba(10, 10, 15, 0.8)',
+        borderBottomColor: isScrolled ? 'rgba(37, 99, 235, 0.3)' : 'rgba(255, 255, 255, 0.1)'
+      }}>
         <nav className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400/40 to-blue-500/40 rounded-lg blur-sm"></div>
-              <div className="relative bg-gradient-to-r from-cyan-500 to-blue-600 p-2 rounded-lg shadow-lg">
+              <div className="absolute -inset-1 rounded-lg blur-sm" style={{
+                background: 'linear-gradient(45deg, rgba(37, 99, 235, 0.4), rgba(14, 165, 233, 0.4))'
+              }}></div>
+              <div className="relative p-2 rounded-lg shadow-lg" style={{
+                background: 'linear-gradient(135deg, #2563eb, #0ea5e9)'
+              }}>
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
                   <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                 </svg>
               </div>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold text-transparent bg-clip-text" style={{
+              backgroundImage: 'linear-gradient(135deg, #0ea5e9, #2563eb)'
+            }}>
               Legal Analyzer
             </h1>
           </div>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex gap-8 text-slate-300">
+          <ul className="hidden md:flex gap-8" style={{ color: '#e0e0e0' }}>
             {navItems.map((item) => (
               <li key={item}>
                 <a
@@ -49,7 +58,9 @@ export default function Navbar() {
                   className="relative group py-2 px-1 hover:text-white transition-all duration-300"
                 >
                   <span className="relative z-10">{item}</span>
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300 rounded-full"></div>
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300 rounded-full" style={{
+                    background: 'linear-gradient(90deg, #2563eb, #0ea5e9)'
+                  }}></div>
                 </a>
               </li>
             ))}
@@ -57,15 +68,44 @@ export default function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <button className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/30">
-              Try Free
+            <button 
+              className="px-6 py-2.5 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg relative overflow-hidden group"
+              style={{
+                background: 'linear-gradient(135deg, #2563eb, #0ea5e9)',
+                boxShadow: '0 10px 25px rgba(37, 99, 235, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'linear-gradient(135deg, #1e40af, #2563eb)';
+                e.target.style.boxShadow = '0 15px 35px rgba(37, 99, 235, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'linear-gradient(135deg, #2563eb, #0ea5e9)';
+                e.target.style.boxShadow = '0 10px 25px rgba(37, 99, 235, 0.3)';
+              }}
+            >
+              <span className="relative z-10">Try Free</span>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
+                background: 'rgba(255, 255, 255, 0.1)'
+              }}></div>
             </button>
           </div>
 
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200"
+            className="md:hidden p-2 rounded-lg transition-all duration-200"
+            style={{ 
+              color: '#e0e0e0',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.color = '#ffffff';
+              e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = '#e0e0e0';
+              e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+            }}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -75,21 +115,47 @@ export default function Navbar() {
         <div className={`md:hidden transition-all duration-300 overflow-hidden ${
           isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="bg-slate-900/95 backdrop-blur-xl border-t border-slate-700/50 px-6 py-4">
+          <div className="backdrop-blur-xl border-t px-6 py-4" style={{
+            backgroundColor: 'rgba(42, 42, 64, 0.95)',
+            borderTopColor: 'rgba(255, 255, 255, 0.1)'
+          }}>
             <ul className="space-y-4">
               {navItems.map((item) => (
                 <li key={item}>
                   <a
                     href={`#${item.toLowerCase().replace(/\s+/g, "")}`}
-                    className="block py-3 px-4 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200"
+                    className="block py-3 px-4 rounded-lg transition-all duration-200"
+                    style={{ color: '#e0e0e0' }}
                     onClick={() => setIsMobileMenuOpen(false)}
+                    onMouseEnter={(e) => {
+                      e.target.style.color = '#ffffff';
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.color = '#e0e0e0';
+                      e.target.style.backgroundColor = 'transparent';
+                    }}
                   >
                     {item}
                   </a>
                 </li>
               ))}
               <li className="pt-2">
-                <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg">
+                <button 
+                  className="w-full py-3 text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, #2563eb, #0ea5e9)',
+                    boxShadow: '0 8px 20px rgba(37, 99, 235, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'linear-gradient(135deg, #1e40af, #2563eb)';
+                    e.target.style.boxShadow = '0 12px 25px rgba(37, 99, 235, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'linear-gradient(135deg, #2563eb, #0ea5e9)';
+                    e.target.style.boxShadow = '0 8px 20px rgba(37, 99, 235, 0.3)';
+                  }}
+                >
                   Try Free
                 </button>
               </li>

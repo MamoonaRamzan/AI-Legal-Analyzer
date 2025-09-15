@@ -18,37 +18,57 @@ export default function Hero() {
   return (
     <section 
       id="home" 
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+      className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%)',
+        marginTop: '-80px',
+        paddingTop: '80px'
+      }}
     >
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-cyan-500/5 via-blue-500/5 to-indigo-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{
+          background: 'rgba(37, 99, 235, 0.08)'
+        }}></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ 
+          background: 'rgba(14, 165, 233, 0.08)',
+          animationDelay: '1s' 
+        }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-3xl" style={{
+          background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, rgba(14, 165, 233, 0.05) 50%, rgba(30, 64, 175, 0.05) 100%)'
+        }}></div>
       </div>
 
       {/* Content */}
       <div className={`relative z-10 max-w-5xl mx-auto transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         
         {/* Badge */}
-        <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-full text-cyan-300 font-medium mb-8 backdrop-blur-sm">
+        <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full font-medium mb-8 backdrop-blur-sm border" style={{
+          background: 'rgba(37, 99, 235, 0.1)',
+          borderColor: 'rgba(37, 99, 235, 0.3)',
+          color: '#0ea5e9'
+        }}>
           <Sparkles className="w-4 h-4" />
           <span>AI-Powered Legal Technology</span>
         </div>
 
         {/* Main Headline */}
         <h2 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-          <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 bg-clip-text text-transparent">
+          <span className="text-transparent bg-clip-text" style={{
+            backgroundImage: 'linear-gradient(135deg, #0ea5e9, #2563eb)'
+          }}>
             AI-Powered Legal
           </span>
           <br />
-          <span className="bg-gradient-to-r from-blue-200 via-cyan-200 to-slate-200 bg-clip-text text-transparent">
+          <span className="text-transparent bg-clip-text" style={{
+            backgroundImage: 'linear-gradient(135deg, #e0e0e0, #ffffff)'
+          }}>
             Clause Analyzer
           </span>
         </h2>
 
         {/* Subtitle */}
-        <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-12 leading-relaxed">
+        <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-12 leading-relaxed" style={{ color: '#e0e0e0' }}>
           Upload contracts, detect risky clauses, chat with your documents, and generate instant reports with cutting-edge AI technology.
         </p>
 
@@ -57,8 +77,21 @@ export default function Hero() {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="flex items-center space-x-2 px-4 py-2 bg-slate-800/50 border border-slate-700/50 rounded-full text-slate-300 backdrop-blur-sm hover:border-cyan-500/30 hover:text-cyan-300 transition-all duration-300"
-              style={{ animationDelay: `${index * 150}ms` }}
+              className="flex items-center space-x-2 px-4 py-2 rounded-full backdrop-blur-sm border transition-all duration-300 hover:border-opacity-60"
+              style={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+                color: '#e0e0e0',
+                animationDelay: `${index * 150}ms`
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.borderColor = 'rgba(37, 99, 235, 0.4)';
+                e.target.style.color = '#0ea5e9';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.color = '#e0e0e0';
+              }}
             >
               <feature.icon className="w-4 h-4" />
               <span className="text-sm font-medium">{feature.text}</span>
@@ -70,9 +103,23 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a 
             href="#demo" 
-            className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-2xl transition-all duration-300 shadow-xl shadow-cyan-500/25 hover:shadow-cyan-400/40 overflow-hidden min-w-[180px]"
+            className="group relative px-8 py-4 text-white font-semibold rounded-2xl transition-all duration-300 shadow-xl overflow-hidden min-w-[180px]"
+            style={{
+              background: 'linear-gradient(135deg, #2563eb, #0ea5e9)',
+              boxShadow: '0 20px 40px rgba(37, 99, 235, 0.3)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'linear-gradient(135deg, #1e40af, #2563eb)';
+              e.target.style.boxShadow = '0 25px 50px rgba(37, 99, 235, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'linear-gradient(135deg, #2563eb, #0ea5e9)';
+              e.target.style.boxShadow = '0 20px 40px rgba(37, 99, 235, 0.3)';
+            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" style={{
+              background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%)'
+            }}></div>
             <span className="relative flex items-center justify-center space-x-2">
               <span>Try Demo</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -81,7 +128,22 @@ export default function Hero() {
           
           <a 
             href="#features" 
-            className="group px-8 py-4 border-2 border-slate-600 hover:border-cyan-500/50 text-slate-300 hover:text-white font-semibold rounded-2xl hover:bg-slate-800/50 transition-all duration-300 backdrop-blur-sm min-w-[180px]"
+            className="group px-8 py-4 border-2 font-semibold rounded-2xl transition-all duration-300 backdrop-blur-sm min-w-[180px]"
+            style={{
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              color: '#e0e0e0',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.borderColor = 'rgba(37, 99, 235, 0.5)';
+              e.target.style.color = '#ffffff';
+              e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+              e.target.style.color = '#e0e0e0';
+              e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+            }}
           >
             <span className="flex items-center justify-center space-x-2">
               <span>Learn More</span>
@@ -89,26 +151,30 @@ export default function Hero() {
             </span>
           </a>
         </div>
-
-        {/* Stats or Social Proof */}
-        <div className="mt-16 pt-8 border-t border-slate-700/50">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-slate-400">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-              <span className="text-sm">Trusted by 10,000+ legal professionals</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-              <span className="text-sm">99.7% accuracy in clause detection</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-20 animate-bounce"></div>
-      <div className="absolute bottom-20 right-10 w-4 h-4 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full opacity-30 animate-bounce" style={{ animationDelay: '1s' }}></div>
-      <div className="absolute top-1/3 right-20 w-2 h-2 bg-cyan-300 rounded-full opacity-40 animate-ping"></div>
+      <div className="absolute top-32 left-10 w-6 h-6 rounded-full animate-bounce" style={{
+        background: 'linear-gradient(135deg, #2563eb, #0ea5e9)',
+        opacity: '0.6',
+        boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)'
+      }}></div>
+      <div className="absolute bottom-32 right-10 w-4 h-4 rounded-full animate-bounce" style={{ 
+        background: 'linear-gradient(135deg, #0ea5e9, #1e40af)',
+        animationDelay: '1s',
+        opacity: '0.7',
+        boxShadow: '0 0 15px rgba(14, 165, 233, 0.4)'
+      }}></div>
+      <div className="absolute top-1/3 right-20 w-3 h-3 rounded-full animate-ping" style={{
+        backgroundColor: '#0ea5e9',
+        opacity: '0.8',
+        boxShadow: '0 0 10px rgba(14, 165, 233, 0.6)'
+      }}></div>
+      <div className="absolute top-2/3 left-20 w-2 h-2 rounded-full animate-pulse" style={{
+        backgroundColor: '#2563eb',
+        opacity: '0.6',
+        boxShadow: '0 0 8px rgba(37, 99, 235, 0.5)'
+      }}></div>
     </section>
   );
 }
