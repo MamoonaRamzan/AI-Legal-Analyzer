@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Upload, FileText, Loader2, CheckCircle } from "lucide-react";
+import { Upload, FileText, Loader2, CheckCircle, X } from "lucide-react";
 
 export default function UploadBox({ API_BASE, onAnalyzed }) {
   const [loading, setLoading] = useState(false);
@@ -87,62 +87,41 @@ export default function UploadBox({ API_BASE, onAnalyzed }) {
   };
 
   return (
-    <div className="relative overflow-hidden" style={{
-      background: 'var(--bg-card)',
-      borderRadius: '1rem',
-      padding: '2rem',
-      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-    }}>
-      {/* Gradient background overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-indigo-500/10 pointer-events-none"></div>
-      
-      {/* Animated border */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20 p-0.5">
-        <div className="w-full h-full rounded-2xl" style={{ background: 'var(--bg-card)' }}></div>
-      </div>
-      
-      <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500">
-            <FileText className="w-5 h-5 text-white" />
+    <div className="upload-container">
+      {/* Glass Card Container */}
+      <div className="glass-card">
+        {/* Header */}
+        <div className="header">
+          <div className="icon-container">
+            <FileText className="w-5 h-5" />
           </div>
-          <h4 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
-            Upload Contract
-          </h4>
+          <h4 className="title">Contract Analysis</h4>
         </div>
 
-        <div className="space-y-6">
+        {/* Upload Section */}
+        <div className="upload-section">
           {/* Drop Zone */}
           <div
-            className={`relative border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
-              dragActive
-                ? 'border-cyan-400 bg-cyan-500/10 scale-105'
-                : 'border-slate-600 hover:border-cyan-500/50'
-            }`}
+            className={`drop-zone ${dragActive ? 'active' : ''} ${file ? 'has-file' : ''}`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
-            style={{ 
-              borderColor: dragActive ? 'var(--border-accent)' : 'var(--border-primary)',
-              background: dragActive ? 'rgba(6, 182, 212, 0.1)' : 'transparent'
-            }}
           >
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 mb-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
-                <Upload className="w-8 h-8 text-white" />
-              </div>
-              
+            <div className="drop-content">
               {!file ? (
                 <>
-                  <p className="text-lg font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                    Drop your contract here
-                  </p>
-                  <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
-                    or click to browse files
-                  </p>
-                  <label className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-medium cursor-pointer hover:from-cyan-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-                    Choose File
+                  <div className="upload-icon">
+                    <Upload className="w-8 h-8" />
+                  </div>
+                  
+                  <div className="upload-text">
+                    <p className="primary-text">Drop your contract here</p>
+                    <p className="secondary-text">or click to browse files</p>
+                  </div>
+                  
+                  <label className="upload-button">
+                    <span>Choose File</span>
                     <input
                       type="file"
                       className="hidden"
@@ -152,28 +131,25 @@ export default function UploadBox({ API_BASE, onAnalyzed }) {
                   </label>
                 </>
               ) : (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-400" />
-                    <span className="font-medium" style={{ color: 'var(--text-primary)' }}>
-                      File Selected
-                    </span>
+                <div className="file-selected">
+                  <div className="success-indicator">
+                    <CheckCircle className="w-5 h-5" />
+                    <span>File Selected</span>
                   </div>
-                  <div className="bg-slate-700/50 rounded-lg p-3 max-w-xs mx-auto">
-                    <p className="font-medium truncate" style={{ color: 'var(--text-primary)' }}>
-                      {file.name}
-                    </p>
-                    <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                      {formatFileSize(file.size)}
-                    </p>
+                  
+                  <div className="file-info">
+                    <div className="file-details">
+                      <p className="file-name">{file.name}</p>
+                      <p className="file-size">{formatFileSize(file.size)}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFile(null)}
+                      className="remove-file"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setFile(null)}
-                    className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
-                  >
-                    Choose different file
-                  </button>
                 </div>
               )}
             </div>
@@ -181,16 +157,16 @@ export default function UploadBox({ API_BASE, onAnalyzed }) {
 
           {/* Progress Bar */}
           {loading && (
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm" style={{ color: 'var(--text-secondary)' }}>
-                <span>Processing...</span>
+            <div className="progress-section">
+              <div className="progress-info">
+                <span>Processing contract...</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all duration-500 ease-out"
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill"
                   style={{ width: `${uploadProgress}%` }}
-                ></div>
+                />
               </div>
             </div>
           )}
@@ -199,53 +175,395 @@ export default function UploadBox({ API_BASE, onAnalyzed }) {
           <button
             onClick={handleUpload}
             disabled={loading || !file}
-            className="w-full py-4 px-6 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-white font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25 active:scale-95"
+            className={`action-button ${loading ? 'loading' : ''}`}
           >
-            <div className="flex items-center justify-center gap-2">
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Analyzing Contract...</span>
-                </>
-              ) : (
-                <>
-                  <FileText className="w-5 h-5" />
-                  <span>Analyze Contract</span>
-                </>
-              )}
-            </div>
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Analyzing...</span>
+              </>
+            ) : (
+              <>
+                <FileText className="w-5 h-5" />
+                <span>Analyze Contract</span>
+              </>
+            )}
           </button>
 
-          {/* File Format Info */}
-          <div className="text-center">
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-              Supports PDF, DOC, DOCX, and TXT files • Maximum file size: 10MB
-            </p>
+          {/* File Info */}
+          <div className="file-format-info">
+            <p>Supports PDF, DOC, DOCX, TXT • Max 10MB</p>
           </div>
         </div>
       </div>
 
-      {/* Custom CSS Variables */}
       <style jsx>{`
-        :root {
-          /* Primary Brand */
-          --brand-cyan: #06b6d4;
-          --brand-blue: #3b82f6;
-          --brand-indigo: #6366f1;
-          
-          /* Backgrounds */
-          --bg-primary: #020617;  /* slate-950 */
-          --bg-secondary: #0f172a; /* slate-900 */
-          --bg-card: #1e293b;     /* slate-800 */
-          
-          /* Text */
+        .upload-container {
+          --primary-blue: #2563eb;
+          --primary-cyan: #0ea5e9;
+          --deep-blue: #1e40af;
+          --bg-primary: #0a0a0f;
+          --bg-secondary: #1a1a2e;
+          --bg-card: #2a2a40;
           --text-primary: #ffffff;
-          --text-secondary: #cbd5e1; /* slate-300 */
-          --text-muted: #94a3b8;    /* slate-400 */
+          --text-secondary: #e0e0e0;
+          --text-muted: #a0a0a0;
+          --glass-blue: rgba(37, 99, 235, 0.1);
+          --glass-subtle: rgba(255, 255, 255, 0.05);
+          --glass-border: rgba(255, 255, 255, 0.1);
+          --shadow-primary: rgba(37, 99, 235, 0.15);
           
-          /* Borders */
-          --border-primary: #334155; /* slate-700 */
-          --border-accent: #06b6d4;  /* cyan-500 */
+          width: 100%;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .glass-card {
+          background: var(--bg-card);
+          backdrop-filter: blur(20px);
+          border: 1px solid var(--glass-border);
+          border-radius: 24px;
+          padding: 40px;
+          box-shadow: 
+            0 24px 48px -12px rgba(0, 0, 0, 0.4),
+            0 0 0 1px var(--glass-border);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .glass-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, 
+            transparent, 
+            var(--glass-border) 20%, 
+            var(--glass-border) 80%, 
+            transparent
+          );
+        }
+
+        .header {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 40px;
+        }
+
+        .icon-container {
+          width: 48px;
+          height: 48px;
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          box-shadow: 0 8px 16px -4px var(--shadow-primary);
+        }
+
+        .title {
+          font-size: 24px;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0;
+          letter-spacing: -0.025em;
+        }
+
+        .upload-section {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+
+        .drop-zone {
+          border: 2px dashed var(--glass-border);
+          border-radius: 20px;
+          padding: 50px 50px;
+          background: var(--glass-subtle);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
+          position: relative;
+        }
+
+        .drop-zone:hover {
+          border-color: var(--primary-cyan);
+          background: var(--glass-blue);
+          transform: translateY(-2px);
+          box-shadow: 0 16px 32px -8px var(--shadow-primary);
+        }
+
+        .drop-zone.active {
+          border-color: var(--primary-blue);
+          background: var(--glass-blue);
+          transform: scale(1.02);
+          box-shadow: 
+            0 20px 40px -8px var(--shadow-primary),
+            0 0 0 1px var(--primary-blue);
+        }
+
+        .drop-zone.has-file {
+          border-color: #10b981;
+          background: rgba(16, 185, 129, 0.05);
+        }
+
+        .drop-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: 20px;
+        }
+
+        .upload-icon {
+          width: 72px;
+          height: 72px;
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          box-shadow: 0 12px 24px -6px var(--shadow-primary);
+        }
+
+        .upload-text {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .primary-text {
+          font-size: 18px;
+          font-weight: 500;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        .secondary-text {
+          font-size: 14px;
+          color: var(--text-muted);
+          margin: 0;
+        }
+
+        .upload-button {
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
+          color: white;
+          border: none;
+          border-radius: 12px;
+          padding: 12px 24px;
+          font-weight: 500;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          box-shadow: 0 8px 16px -4px var(--shadow-primary);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .upload-button:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 12px 24px -4px var(--shadow-primary);
+        }
+
+        .file-selected {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          width: 100%;
+        }
+
+        .success-indicator {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #10b981;
+          font-weight: 500;
+          justify-content: center;
+        }
+
+        .file-info {
+          background: var(--glass-subtle);
+          border: 1px solid var(--glass-border);
+          border-radius: 12px;
+          padding: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .file-details {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .file-name {
+          font-weight: 500;
+          color: var(--text-primary);
+          margin: 0 0 4px 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .file-size {
+          font-size: 13px;
+          color: var(--text-muted);
+          margin: 0;
+        }
+
+        .remove-file {
+          background: none;
+          border: none;
+          color: var(--text-muted);
+          cursor: pointer;
+          padding: 4px;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+          margin-left: 12px;
+          flex-shrink: 0;
+        }
+
+        .remove-file:hover {
+          background: rgba(239, 68, 68, 0.1);
+          color: #ef4444;
+        }
+
+        .progress-section {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .progress-info {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+          color: var(--text-secondary);
+          font-weight: 500;
+        }
+
+        .progress-bar {
+          height: 8px;
+          background: var(--glass-subtle);
+          border-radius: 4px;
+          overflow: hidden;
+          border: 1px solid var(--glass-border);
+        }
+
+        .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, var(--primary-blue), var(--primary-cyan));
+          border-radius: 3px;
+          transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 0 8px var(--shadow-primary);
+        }
+
+        .action-button {
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
+          color: white;
+          border: none;
+          border-radius: 16px;
+          padding: 16px 32px;
+          font-weight: 600;
+          font-size: 16px;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          box-shadow: 0 12px 24px -6px var(--shadow-primary);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .action-button:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 20px 40px -8px var(--shadow-primary);
+        }
+
+        .action-button:active:not(:disabled) {
+          transform: translateY(0);
+        }
+
+        .action-button:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .action-button.loading {
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .file-format-info {
+          text-align: center;
+        }
+
+        .file-format-info p {
+          font-size: 12px;
+          color: var(--text-muted);
+          margin: 0;
+          opacity: 0.8;
+        }
+
+        .hidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          border: 0;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .animate-spin {
+          animation: spin 1s linear infinite;
+        }
+
+        @media (max-width: 640px) {
+          .upload-container {
+            max-width: 100%;
+            padding: 0 16px;
+          }
+          
+          .glass-card {
+            padding: 32px 24px;
+            border-radius: 20px;
+          }
+          
+          .drop-zone {
+            padding: 40px 24px;
+          }
+          
+          .upload-icon {
+            width: 72px;
+            height: 72px;
+          }
+          
+          .primary-text {
+            font-size: 16px;
+          }
+          
+          .title {
+            font-size: 20px;
+          }
+          
+          .icon-container {
+            width: 40px;
+            height: 40px;
+          }
         }
       `}</style>
     </div>
