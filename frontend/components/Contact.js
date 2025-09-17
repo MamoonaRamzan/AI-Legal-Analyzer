@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, MessageSquare } from 'lucide-react';
+import { Send, CheckCircle, MessageSquare } from 'lucide-react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -20,7 +20,6 @@ export default function Contact() {
   const handleSubmit = () => {
     if (formData.name && formData.email && formData.message) {
       setIsSubmitted(true);
-      // Reset after 3 seconds for demo
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({ name: '', email: '', message: '' });
@@ -28,28 +27,10 @@ export default function Contact() {
     }
   };
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email Us",
-      content: "hello@legalanalyzer.ai"
-    },
-    {
-      icon: Phone,
-      title: "Call Us",
-      content: "+1 (555) 123-4567"
-    },
-    {
-      icon: MapPin,
-      title: "Visit Us",
-      content: "San Francisco, CA"
-    }
-  ];
-
   return (
     <section 
       id="contact" 
-      className="py-16 px-6 relative overflow-hidden"
+      className="py-16 px-6 pb-0 relative overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%)'
       }}
@@ -98,7 +79,7 @@ export default function Contact() {
             {!isSubmitted ? (
               <div className="space-y-4">
                 {/* Name Field */}
-                <div className="relative group">
+                <div>
                   <label className="block text-sm font-medium mb-2" style={{ color: '#e0e0e0' }}>
                     Full Name
                   </label>
@@ -110,7 +91,7 @@ export default function Contact() {
                     onFocus={() => setFocusedField('name')}
                     onBlur={() => setFocusedField('')}
                     placeholder="Enter your full name"
-                    className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 text-white`}
+                    className="w-full px-4 py-3 rounded-xl border transition-all duration-300 text-white"
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.05)',
                       borderColor: focusedField === 'name' ? 'rgba(37, 99, 235, 0.5)' : 'rgba(255, 255, 255, 0.1)',
@@ -120,7 +101,7 @@ export default function Contact() {
                 </div>
 
                 {/* Email Field */}
-                <div className="relative group">
+                <div>
                   <label className="block text-sm font-medium mb-2" style={{ color: '#e0e0e0' }}>
                     Email Address
                   </label>
@@ -132,7 +113,7 @@ export default function Contact() {
                     onFocus={() => setFocusedField('email')}
                     onBlur={() => setFocusedField('')}
                     placeholder="Enter your email address"
-                    className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 text-white`}
+                    className="w-full px-4 py-3 rounded-xl border transition-all duration-300 text-white"
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.05)',
                       borderColor: focusedField === 'email' ? 'rgba(37, 99, 235, 0.5)' : 'rgba(255, 255, 255, 0.1)',
@@ -142,7 +123,7 @@ export default function Contact() {
                 </div>
 
                 {/* Message Field */}
-                <div className="relative group">
+                <div>
                   <label className="block text-sm font-medium mb-2" style={{ color: '#e0e0e0' }}>
                     Message
                   </label>
@@ -154,7 +135,7 @@ export default function Contact() {
                     onBlur={() => setFocusedField('')}
                     placeholder="Tell us about your legal analysis needs..."
                     rows={3}
-                    className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 text-white resize-none`}
+                    className="w-full px-4 py-3 rounded-xl border transition-all duration-300 text-white resize-none"
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.05)',
                       borderColor: focusedField === 'message' ? 'rgba(37, 99, 235, 0.5)' : 'rgba(255, 255, 255, 0.1)',

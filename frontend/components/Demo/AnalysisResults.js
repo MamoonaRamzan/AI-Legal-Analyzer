@@ -37,7 +37,6 @@ export default function AnalysisResults({ results }) {
             </div>
             <div className="card-content">
               <p className="card-value">{results.doc_id}</p>
-              <p className="card-subtitle">Contract ID</p>
             </div>
           </div>
 
@@ -171,7 +170,7 @@ export default function AnalysisResults({ results }) {
           --shadow-primary: rgba(37, 99, 235, 0.15);
           
           width: 100%;
-          max-width: 800px;
+          max-width: 900px;
           margin: 0 auto;
         }
 
@@ -289,8 +288,8 @@ export default function AnalysisResults({ results }) {
         }
 
         .card-value {
-          font-size: 18px;
-          font-weight: 600;
+          font-size: 15px;
+          font-weight: 700;
           color: var(--text-primary);
           margin: 0;
           line-height: 1;

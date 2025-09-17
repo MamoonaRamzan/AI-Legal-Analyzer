@@ -23,13 +23,18 @@ export default function Home() {
   return (
     <div className="bg-gray-950 text-gray-100">
       <Navbar />
-      <main className="pt-20">
+      <main>
         <Hero />
-        <HowItWorks />
-        <Features />
+        
+        <section id="howitworks">
+          <HowItWorks />
+        </section>
+        
+        <section id="features">
+          <Features />
+        </section>
 
         <section id="demo" className="py-20 bg-gray-900 px-6">
-          <h3 className="text-3xl font-semibold text-center mb-12">Try The Demo</h3>
           <div className="max-w-4xl mx-auto space-y-10">
             <UploadBox API_BASE={API_BASE} onAnalyzed={handleAnalyzed} />
             <AnalysisResults results={results} />

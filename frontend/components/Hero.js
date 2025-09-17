@@ -17,12 +17,10 @@ export default function Hero() {
 
   return (
     <section 
-      id="home" 
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden"
+      id="home"
+      className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden pt-20"
       style={{
-        background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%)',
-        marginTop: '-80px',
-        paddingTop: '80px'
+        background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%)'
       }}
     >
       {/* Background Effects */}

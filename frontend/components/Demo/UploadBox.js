@@ -214,7 +214,7 @@ export default function UploadBox({ API_BASE, onAnalyzed }) {
           --shadow-primary: rgba(37, 99, 235, 0.15);
           
           width: 100%;
-          max-width: 800px;
+          max-width: 900px;
           margin: 0 auto;
         }
 

@@ -90,52 +90,75 @@ export default function ChatBox({ API_BASE, docId }) {
   return (
     <>
       <style jsx>{`
-        :root {
-          /* Primary Colors */
-          --electric-blue: #4a9eff;
-          --cyan-glow: #00d4ff;
-          --deep-ocean: #2d7dd2;
-          
-          /* Background Colors - matching your image */
-          --main-bg: #3c4043;
-          --card-bg: #3c4043;
-          
-          /* Text Colors */
-          --pure-white: #ffffff;
-          --light-gray: #e0e0e0;
-          --medium-gray: #a0a0a0;
-        }
-        
         .chat-container {
-          background: var(--main-bg);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+          --primary-blue: #2563eb;
+          --primary-cyan: #0ea5e9;
+          --deep-blue: #1e40af;
+          --bg-primary: #0a0a0f;
+          --bg-secondary: #1a1a2e;
+          --bg-card: #2a2a40;
+          --text-primary: #ffffff;
+          --text-secondary: #e0e0e0;
+          --text-muted: #a0a0a0;
+          --glass-blue: rgba(37, 99, 235, 0.1);
+          --glass-subtle: rgba(255, 255, 255, 0.05);
+          --glass-border: rgba(255, 255, 255, 0.1);
+          --shadow-primary: rgba(37, 99, 235, 0.15);
+          
+          width: 100%;
+          max-width: 900px;
+          margin: 0 auto;
+          borderColor: 'rgba(255, 255, 255, 0.1);
         }
-        
+
         .glass-card {
-          background: rgba(74, 158, 255, 0.15);
-          border: 1px solid var(--electric-blue);
+          background: var(--bg-card);
+          borderColor: 'rgba(255, 255, 255, 0.1)
+          backdrop-filter: blur(20px);
+          border: 1px solid var(--glass-border);
+          border-radius: 24px;
+          padding: 40px;
+          box-shadow: 
+            0 24px 48px -12px rgba(0, 0, 0, 0.4),
+            0 0 0 1px var(--glass-border);
+          position: relative;
+          overflow: hidden;
         }
-        
+
+        .glass-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, 
+            transparent, 
+            var(--glass-border) 20%, 
+            var(--glass-border) 80%, 
+            transparent
+          );
+        }
+
         .gradient-primary {
-          background: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyan-glow) 100%);
+          background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyan-glow) 100%);
+          background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
         
         .message-user {
-          background: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyan-glow) 100%);
-          box-shadow: 0 8px 32px rgba(74, 158, 255, 0.3);
+          background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+          box-shadow: 0 8px 32px var(--shadow-primary);
         }
         
         .message-ai {
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: var(--bg-card);
+          border: 1px solid var(--glass-border);
         }
         
         .message-error {
@@ -144,40 +167,66 @@ export default function ChatBox({ API_BASE, docId }) {
         }
         
         .suggestion-button {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(74, 158, 255, 0.3);
+          background: var(--glass-subtle);
+          border: 1px solid rgba(37, 99, 235, 0.3);
           transition: all 0.3s ease;
         }
         
         .suggestion-button:hover {
-          background: rgba(74, 158, 255, 0.15);
-          border-color: var(--electric-blue);
+          background: var(--glass-blue);
+          border-color: var(--primary-blue);
           transform: translateY(-2px);
+          box-shadow: 0 8px 24px var(--shadow-primary);
         }
         
         .input-field {
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: var(--bg-card);
+          border: 1px solid var(--glass-border);
           transition: all 0.3s ease;
         }
         
         .input-field:focus {
-          background: rgba(255, 255, 255, 0.12);
-          border-color: var(--electric-blue);
-          box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+          background: var(--bg-card);
+          border-color: var(--primary-blue);
+          box-shadow: 0 0 0 3px var(--shadow-primary);
         }
         
         .evidence-card {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: var(--bg-secondary);
+          border: 1px solid var(--glass-border);
+        }
+        
+        .chat-container::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, 
+            transparent, 
+            var(--glass-border) 20%, 
+            var(--glass-border) 80%, 
+            transparent
+          );
         }
         
         .glow-effect {
-          box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+          box-shadow: 0 8px 16px -4px var(--shadow-primary);
         }
         
+        .header-border {
+          border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .input-border {
+          border-top: 1px solid var(--glass-border);
+        }
+        
+        .evidence-border {
+          border-top: 1px solid var(--glass-border);
+        }
         /* Custom scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
           width: 8px;
         }
         
@@ -187,12 +236,12 @@ export default function ChatBox({ API_BASE, docId }) {
         }
         
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyan-glow) 100%);
+          background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
           border-radius: 4px;
         }
         
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: var(--electric-blue);
+          background: var(--primary-blue);
         }
         
         .pulse-glow {
@@ -200,21 +249,19 @@ export default function ChatBox({ API_BASE, docId }) {
         }
         
         @keyframes pulse-glow {
-          from { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
-          to { box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); }
+          from { box-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
+          to { box-shadow: 0 0 20px rgba(14, 165, 233, 0.8); }
         }
       `}</style>
       
       <div className="chat-container relative overflow-hidden h-full flex flex-col rounded-2xl" style={{
         padding: '0',
-        minHeight: '600px'
+        minHeight: '350px'
       }}>
 
         <div className="relative z-10 flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 pb-4" style={{ 
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-          }}>
+          <div className="p-6 pb-4 header-border">
             <div className="flex items-center gap-3">
               <div className="gradient-primary p-3 rounded-xl glow-effect">
                 <MessageCircle className="w-6 h-6 text-white" />
@@ -223,21 +270,21 @@ export default function ChatBox({ API_BASE, docId }) {
                 <h4 className="text-3xl font-bold gradient-text mb-1">
                   Contract Assistant
                 </h4>
-                <p className="text-sm" style={{ color: 'var(--medium-gray)' }}>
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                   {docId ? `Ready to answer questions about ${docId}` : "Analyze a document first to start chatting"}
                 </p>
               </div>
               {docId && (
                 <div className="glass-card flex items-center gap-2 px-4 py-2 rounded-full">
-                  <div className="w-2 h-2 bg-cyan-glow rounded-full pulse-glow"></div>
-                  <span className="text-xs font-medium" style={{ color: 'var(--cyan-glow)' }}>Connected</span>
+                  <div className="w-2 h-2 rounded-full pulse-glow" style={{ backgroundColor: 'var(--primary-cyan)' }}></div>
+                  <span className="text-xs font-medium" style={{ color: 'var(--primary-cyan)' }}>Connected</span>
                 </div>
               )}
             </div>
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6" style={{ maxHeight: '400px' }}>
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6" style={{ maxHeight: '650px' }}>
             {chatHistory.length === 0 && docId && (
               <div className="text-center py-12">
                 <div className="gradient-primary w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-effect">
@@ -246,7 +293,7 @@ export default function ChatBox({ API_BASE, docId }) {
                 <h3 className="text-2xl font-bold mb-3 gradient-text">
                   Ready to help!
                 </h3>
-                <p className="text-base mb-8" style={{ color: 'var(--medium-gray)' }}>
+                <p className="text-base mb-8" style={{ color: 'var(--text-muted)' }}>
                   Ask me anything about your contract. Here are some suggestions:
                 </p>
                 <div className="grid grid-cols-1 gap-3 max-w-lg mx-auto">
@@ -256,7 +303,7 @@ export default function ChatBox({ API_BASE, docId }) {
                       onClick={() => setQuery(suggestion)}
                       className="suggestion-button text-left px-6 py-4 rounded-xl"
                     >
-                      <span className="text-sm font-medium" style={{ color: 'var(--light-gray)' }}>
+                      <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
                         "{suggestion}"
                       </span>
                     </button>
@@ -282,17 +329,17 @@ export default function ChatBox({ API_BASE, docId }) {
                       : "message-ai rounded-bl-lg"
                   }`}>
                     <p className="whitespace-pre-wrap leading-relaxed text-base" style={{ 
-                      color: msg.role === "user" ? "white" : msg.isError ? "#ef4444" : "var(--light-gray)" 
+                      color: msg.role === "user" ? "white" : msg.isError ? "#ef4444" : "var(--text-secondary)" 
                     }}>
                       {msg.text}
                     </p>
                     
                     {msg.role === "ai" && msg.evidence && msg.evidence.length > 0 && (
-                      <div className="mt-5 pt-4" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                      <div className="mt-5 pt-4 evidence-border">
                         <button
                           onClick={() => toggleEvidence(i)}
-                          className="flex items-center gap-2 text-sm font-semibold hover:text-cyan-glow transition-colors mb-4"
-                          style={{ color: 'var(--electric-blue)' }}
+                          className="flex items-center gap-2 text-sm font-semibold transition-colors mb-4"
+                          style={{ color: 'var(--primary-blue)' }}
                         >
                           <FileText className="w-4 h-4" />
                           <span>Evidence ({msg.evidence.length} sources)</span>
@@ -307,11 +354,11 @@ export default function ChatBox({ API_BASE, docId }) {
                                   <span className="px-3 py-1 text-xs rounded-lg font-mono gradient-primary text-white">
                                     {evidence.clause_id}
                                   </span>
-                                  <span className="text-xs font-medium" style={{ color: 'var(--medium-gray)' }}>
+                                  <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                                     Source {j + 1}
                                   </span>
                                 </div>
-                                <p className="text-sm leading-relaxed" style={{ color: 'var(--light-gray)' }}>
+                                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                                   {evidence.text?.slice(0, 200)}
                                   {evidence.text?.length > 200 && "..."}
                                 </p>
@@ -324,7 +371,7 @@ export default function ChatBox({ API_BASE, docId }) {
                   </div>
                   
                   <div className="flex items-center gap-2 mt-2 px-3">
-                    <span className="text-xs font-medium" style={{ color: 'var(--medium-gray)' }}>
+                    <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                       {formatTime(msg.timestamp)}
                     </span>
                   </div>
@@ -345,8 +392,8 @@ export default function ChatBox({ API_BASE, docId }) {
                 </div>
                 <div className="message-ai p-5 rounded-2xl rounded-bl-lg">
                   <div className="flex items-center gap-3">
-                    <Loader2 className="w-5 h-5 animate-spin" style={{ color: 'var(--electric-blue)' }} />
-                    <span className="text-base font-medium" style={{ color: 'var(--light-gray)' }}>
+                    <Loader2 className="w-5 h-5 animate-spin" style={{ color: 'var(--primary-blue)' }} />
+                    <span className="text-base font-medium" style={{ color: 'var(--text-secondary)' }}>
                       Thinking...
                     </span>
                   </div>
@@ -358,9 +405,7 @@ export default function ChatBox({ API_BASE, docId }) {
           </div>
 
           {/* Input Area */}
-          <div className="p-6 pt-4" style={{ 
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)'
-          }}>
+          <div className="p-6 pt-4 input-border">
             <div className="flex gap-4">
               <div className="flex-1 relative">
                 <input
@@ -373,7 +418,7 @@ export default function ChatBox({ API_BASE, docId }) {
                   disabled={!docId}
                   className="input-field w-full px-5 py-4 rounded-xl outline-none transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-base"
                   style={{
-                    color: 'var(--light-gray)'
+                    color: 'var(--text-secondary)'
                   }}
                 />
                 {query && (
@@ -382,7 +427,7 @@ export default function ChatBox({ API_BASE, docId }) {
                     onClick={() => setQuery("")}
                     className="absolute right-16 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center transition-colors"
                     style={{ 
-                      color: 'var(--medium-gray)',
+                      color: 'var(--text-muted)',
                       background: 'var(--glass-subtle)'
                     }}
                   >
@@ -404,7 +449,7 @@ export default function ChatBox({ API_BASE, docId }) {
             </div>
             
             {!docId && (
-              <p className="text-sm mt-3 text-center font-medium" style={{ color: 'var(--medium-gray)' }}>
+              <p className="text-sm mt-3 text-center font-medium" style={{ color: 'var(--text-muted)' }}>
                 Upload and analyze a contract to start asking questions
               </p>
             )}

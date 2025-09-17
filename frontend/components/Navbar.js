@@ -13,7 +13,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = ["Home", "How It Works", "Features", "Demo", "Contact"];
+  const navItems = [
+    { name: "Home", href: "#home" },
+    { name: "How It Works", href: "#howitworks" },
+    { name: "Features", href: "#features" },
+    { name: "Contract Analysis", href: "#demo" },
+    { name: "Contact", href: "#contact" }
+  ];
 
   return (
     <>
@@ -52,12 +58,12 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <ul className="hidden md:flex gap-8" style={{ color: '#e0e0e0' }}>
             {navItems.map((item) => (
-              <li key={item}>
+              <li key={item.name}>
                 <a
-                  href={`#${item.toLowerCase().replace(/\s+/g, "")}`}
+                  href={item.href}
                   className="relative group py-2 px-1 hover:text-white transition-all duration-300"
                 >
-                  <span className="relative z-10">{item}</span>
+                  <span className="relative z-10">{item.name}</span>
                   <div className="absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300 rounded-full" style={{
                     background: 'linear-gradient(90deg, #2563eb, #0ea5e9)'
                   }}></div>
@@ -68,8 +74,9 @@ export default function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <button 
-              className="px-6 py-2.5 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg relative overflow-hidden group"
+            <a 
+              href="#demo"
+              className="inline-block px-6 py-2.5 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg relative overflow-hidden group"
               style={{
                 background: 'linear-gradient(135deg, #2563eb, #0ea5e9)',
                 boxShadow: '0 10px 25px rgba(37, 99, 235, 0.3)'
@@ -87,7 +94,7 @@ export default function Navbar() {
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
                 background: 'rgba(255, 255, 255, 0.1)'
               }}></div>
-            </button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -121,9 +128,9 @@ export default function Navbar() {
           }}>
             <ul className="space-y-4">
               {navItems.map((item) => (
-                <li key={item}>
+                <li key={item.name}>
                   <a
-                    href={`#${item.toLowerCase().replace(/\s+/g, "")}`}
+                    href={item.href}
                     className="block py-3 px-4 rounded-lg transition-all duration-200"
                     style={{ color: '#e0e0e0' }}
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -136,17 +143,19 @@ export default function Navbar() {
                       e.target.style.backgroundColor = 'transparent';
                     }}
                   >
-                    {item}
+                    {item.name}
                   </a>
                 </li>
               ))}
               <li className="pt-2">
-                <button 
-                  className="w-full py-3 text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
+                <a 
+                  href="#demo"
+                  className="block w-full py-3 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 text-center"
                   style={{
                     background: 'linear-gradient(135deg, #2563eb, #0ea5e9)',
                     boxShadow: '0 8px 20px rgba(37, 99, 235, 0.3)'
                   }}
+                  onClick={() => setIsMobileMenuOpen(false)}
                   onMouseEnter={(e) => {
                     e.target.style.background = 'linear-gradient(135deg, #1e40af, #2563eb)';
                     e.target.style.boxShadow = '0 12px 25px rgba(37, 99, 235, 0.4)';
@@ -157,7 +166,7 @@ export default function Navbar() {
                   }}
                 >
                   Try Free
-                </button>
+                </a>
               </li>
             </ul>
           </div>
