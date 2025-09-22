@@ -5,364 +5,199 @@
   <meta charset="utf-8">
   <title>AI Legal Analyzer Report - SampleContract-Shuttle.pdf</title>
   <style>
-    :root {
-      --primary-blue: #2563eb;
-      --primary-cyan: #0ea5e9;
-      --deep-blue: #1e40af;
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #1a1a2e;
-      --bg-card: #2a2a40;
-      --text-primary: #ffffff;
-      --text-secondary: #e0e0e0;
-      --text-muted: #a0a0a0;
-      --glass-blue: rgba(37, 99, 235, 0.1);
-      --glass-subtle: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --shadow-primary: rgba(37, 99, 235, 0.15);
-      --success-green: #10b981;
-      --warning-amber: #f59e0b;
-      --danger-red: #ef4444;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      color: #1f2937;
-      line-height: 1.7;
-      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background: #f9f9f9;
+      color: #333;
     }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
     header {
       text-align: center;
-      margin-bottom: 3rem;
-      padding: 2rem;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+      background: #003366;
+      color: white;
+      border-radius: 12px;
+      margin-bottom: 30px;
     }
-
+    h1, h2, h3 {
+      margin-bottom: 10px;
+    }
     h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #1f2937;
-      margin: 0 0 0.5rem 0;
-      background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 2.5em;
     }
-
-    .doc-id {
-      font-size: 1.2rem;
-      color: #64748b;
-      margin-bottom: 1.5rem;
-      font-weight: 500;
+    h2 {
+      color: #003366;
+      margin-top: 30px;
     }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 12px 24px;
-      background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px var(--shadow-primary);
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px var(--shadow-primary);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    .section {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
     h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #1f2937;
-      margin: 0 0 1.5rem 0;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      margin-top: 20px;
+      color: #444;
     }
-
-    .section-icon {
-      width: 24px;
-      height: 24px;
-      background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
+    .button-container {
+      text-align: right;
+      margin-bottom: 20px;
     }
-
-    .risk-flags {
-      display: grid;
-      gap: 1rem;
-      margin-top: 1rem;
+    .download-btn {
+      padding: 10px 20px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
     }
-
-    .flag-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+    .download-btn:hover {
+      background: #004c99;
+    }
+    .flag {
+      background: white;
+      padding: 20px;
       border-radius: 12px;
-      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
-
-    .flag-item:hover {
-      background: #f1f5f9;
-      border-color: var(--primary-blue);
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    .flag h3 {
+      margin: 0 0 10px;
+      color: #003366;
     }
-
-    .flag-icon {
-      width: 8px;
-      height: 8px;
-      background: var(--warning-amber);
-      border-radius: 50%;
-      flex-shrink: 0;
+    .flag p {
+      margin: 6px 0;
     }
-
-    .flag-content {
-      flex: 1;
+    ul {
+      margin: 6px 0 12px 20px;
     }
-
-    .flag-id {
-      font-weight: 600;
-      color: var(--primary-cyan);
-      font-size: 0.9rem;
-    }
-
-    .flag-tag {
-      color: #64748b;
-      margin-top: 0.25rem;
-    }
-
-    .no-flags {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1.5rem;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 12px;
-      color: var(--success-green);
-      font-weight: 500;
-    }
-
-    .clauses-grid {
-      display: grid;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .clause-item {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.2s ease;
-    }
-
-    .clause-item:hover {
-      border-color: var(--primary-blue);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-    }
-
-    .clause-header {
-      padding: 1rem 1.5rem;
-      background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
-      font-weight: 600;
-      color: var(--primary-blue);
-      font-size: 0.9rem;
-    }
-
-    .clause-content {
-      padding: 1.5rem;
-      font-family: 'JetBrains Mono', 'Consolas', monospace;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: #374151;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #64748b;
-      font-size: 0.9rem;
-      border-top: 1px solid #e2e8f0;
-      margin-top: 3rem;
-    }
-
-    .stats-bar {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 1rem 0;
-      flex-wrap: wrap;
-    }
-
-    .stat-item {
-      text-align: center;
-      padding: 1rem;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      min-width: 120px;
-    }
-
-    .stat-number {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary-blue);
-      display: block;
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      .stats-bar {
-        gap: 1rem;
-      }
-      
-      .stat-item {
-        min-width: 100px;
-        padding: 0.75rem;
-      }
-    }
-
-    /* Print styles */
-    @media print {
-      body {
-        background: white;
-        color: black;
-      }
-      
-      .section {
-        border: 1px solid #ddd;
-        box-shadow: none;
-        background: white;
-      }
+    pre {
+      background: #f0f0f0;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95em;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>AI Legal Analyzer Report</h1>
-      <div class="doc-id">Document: SampleContract-Shuttle.pdf</div>
-      
-      <div class="stats-bar">
-        <div class="stat-item">
-          <span class="stat-number">2</span>
-          <span class="stat-label">Risk Flags</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">20</span>
-          <span class="stat-label">Clauses</span>
-        </div>
-      </div>
-      
-      <button class="btn" onclick="window.print()">
-        <span>📄</span>
-        Download Report
-      </button>
-    </header>
 
-    <div class="section">
-      <h3>
-        <div class="section-icon">⚠️</div>
-        Risk Assessment
-      </h3>
-      
-      
-        <div class="risk-flags">
-          
-            <div class="flag-item">
-              <div class="flag-icon"></div>
-              <div class="flag-content">
-                <div class="flag-id">c5</div>
-                <div class="flag-tag">Indemnity Mention</div>
-              </div>
-            </div>
-          
-            <div class="flag-item">
-              <div class="flag-icon"></div>
-              <div class="flag-content">
-                <div class="flag-id">c9</div>
-                <div class="flag-tag">Indemnity Mention</div>
-              </div>
-            </div>
-          
-        </div>
-      
-    </div>
+<header>
+  <h1>AI Legal Analyzer Report</h1>
+  <p><strong>Document:</strong> SampleContract-Shuttle.pdf</p>
+</header>
 
-    <div class="section">
-      <h3>
-        <div class="section-icon">📋</div>
-        Contract Clauses (20 total)
-      </h3>
-      
-      <div class="clauses-grid">
+<div class="button-container">
+  <button class="download-btn" onclick="window.print()">⬇ Download as PDF</button>
+</div>
+
+<h2>Risk Analysis</h2>
+
+  
+    <div class="flag">
+      <h3>Indemnity Mention (c5)</h3>
+      <p><strong>Clause Snippet:</strong></p>
+      <pre>Page 3 
+principal, or if CONSULTANT or CONSULTANT's principal makes an assignment for the benefit of 
+creditors, or if CONSULTANT breaches any term(s) or violates any provision(s) of this Agreement and 
+does not cure such breach or violation within ten (10) days after written notice thereof by 
+COMMISSION.  CONSULTANT shall be liable for any and all reasonable costs incurred by 
+COMMISSION as a result of such default, including but not limited to reprocurement costs of the same 
+or similar services defaulted by CONSULTANT under this Agreement. 
+ 
+C. CONSULTANT may terminate this Agreement by giving the COMMISSION at least one hundred and 
+twenty (120) days advance written notice.  CONSULTANT shall be liable for any and all reasonable 
+costs incurred by COMMISSION as a result of such default, including but not limited to reprocurement 
+costs of the same or similar services defaulted or not provided by CONSULTANT under this 
+Agreement. 
+ 
+5. INDEMNIFICATION FOR DAMAGES, TAXES AND CONTRIBUTIONS. 
+CONSULTANT shall exonerate, indemnify, defend, and hold harmless the COMMISSION (which for the 
+purpose of this Agreement shall include, without limitation, its officers, agents, employees and volunteers) 
+from and against: 
+A. Any and all claims, demands, losses, damages, defense costs, or liability of any kind or nature which 
+COMMISSION may sustain or incur or which may be imposed upon it for injury to or death of persons, 
+or damage to property which arise out of, pertain to, or relate to CONSULTANT’S negligence, 
+recklessness, or willful misconduct under the terms of this Agreement. Such indemnification includes 
+any damage to the person(s), or property(ies) of CONSULTANT and third persons. 
+ 
+B. Any and all Federal, State and Local taxes, charges, fees, or contributions required to be paid with 
+respect to CONSULTANT and CONSULTANT’S officers, employees and agents engaged in the 
+performance of this Agreement (including, without limitation, unemployment insurance, social</pre>
+      <p><strong>Impact:</strong> High — may shift legal/financial burdens</p>
+      <p><strong>Likelihood:</strong> Medium — scope depends on wording</p>
+      <p><strong>Contributing Factors:</strong></p>
+      <ul>
         
-          <div class="clause-item" id="c1">
-            <div class="clause-header">
-              Clause c1
-            </div>
-            <div class="clause-content">Page 1 
+          <li>Indemnity obligations may be one-sided</li>
+        
+          <li>Unclear scope of covered damages</li>
+        
+      </ul>
+      <p><strong>Mitigation Strategies:</strong></p>
+      <ul>
+        
+          <li>Limit indemnity to direct damages caused by breach</li>
+        
+          <li>Require mutual indemnity obligations</li>
+        
+      </ul>
+    </div>
+  
+    <div class="flag">
+      <h3>Indemnity Mention (c9)</h3>
+      <p><strong>Clause Snippet:</strong></p>
+      <pre>Page 5 
+coverage as herein provided, the COMMISSION may, in addition to any other remedies it may have, 
+terminate this Agreement  upon occurrence of such event. 
+ 
+6) If any insurance policy of CONSULTANT required by this document includes language 
+conditioning the insurer’s legal obligation to defend or indemnify COMMISSION on the 
+performance of any act(s) by the named insured, then said insurance policy, by endorsement, 
+shall also name the COMMISSION as a named insured. Notwithstanding the foregoing, both 
+the CONSULTANT and its insurers agree that by naming the COMMISSION as a named 
+insured, the COMMISSION may at its sole direction, but is not obligated to, perform any act 
+required by the named insured under said insurance policies. 
+ 
+7) CONSULTANT shall do all things required to be performed by it pursuant to its insurance policies 
+including but not limited to paying within five (5) work days, all deductibles and self-insured 
+retentions (SIR) required to be paid under any insurance policy that may provide defense or 
+indemnity coverage to COMMISSION or any additional insured. 
+ 
+8) CONSULTANT shall cause the foregoing provisions to be inserted in all subcontracts for any work 
+covered under this Agreement by a subconsultant compensated more than $50,000 and employing 
+more than fifteen (15) employees, provided that the foregoing provisions shall not apply to contracts 
+or subcontracts for standard commercial supplies or raw materials. 
+ 
+7. FEDERAL, STATE AND LOCAL LAWS. CONSULTANT warrants that in the performance of this 
+Agreement, it shall exercise usual and customary professional care in its efforts to comply with all applicable 
+federal, state and local laws, statutes and ordinances and all lawful orders, rules and regulations promulgated 
+thereunder.  In the event of a conflict between the laws and lawful regulations of any government entities 
+having jurisdiction over the project, the CONSULTANT shall notify COMMISSION of the nature and 
+impact o</pre>
+      <p><strong>Impact:</strong> High — may shift legal/financial burdens</p>
+      <p><strong>Likelihood:</strong> Medium — scope depends on wording</p>
+      <p><strong>Contributing Factors:</strong></p>
+      <ul>
+        
+          <li>Indemnity obligations may be one-sided</li>
+        
+          <li>Unclear scope of covered damages</li>
+        
+      </ul>
+      <p><strong>Mitigation Strategies:</strong></p>
+      <ul>
+        
+          <li>Limit indemnity to direct damages caused by breach</li>
+        
+          <li>Require mutual indemnity obligations</li>
+        
+      </ul>
+    </div>
+  
+
+
+<h2>All Clauses</h2>
+<ol>
+
+  <li id="c1">
+    <pre>c1: Page 1 
 Sample Contract 
  
 Contract No.___________ 
@@ -425,14 +260,11 @@ needed, to discuss progress on the contract.
 2. COMPENSATION.  
 In consideration for CONSULTANT accomplishing said result, COMMISSION agrees to pay 
 CONSULTANT as follows:  
-A. Total payment is not to exceed $_____for time and materials </div>
-          </div>
-        
-          <div class="clause-item" id="c2">
-            <div class="clause-header">
-              Clause c2
-            </div>
-            <div class="clause-content">at the rates and conditions set forth in 
+A. Total payment is not to exceed $_____for time and materials </pre>
+  </li>
+
+  <li id="c2">
+    <pre>c2: at the rates and conditions set forth in 
 Exhibit B: Fee Schedule, which by this reference is incorporated herein.  
  
 B. In no event, will the CONSULTANT be reimbursed for overhead costs at a rate that exceeds the 
@@ -446,14 +278,11 @@ the Contract Manager.
  
 E. Progress payments will be made no less than monthly in arrears based on satisfactory services provided 
 and actual allowable incurred costs. A pro rata portion of the CONSULTANT’s fixed fee, if applicable, 
-will be included in the monthly progress payments. If CONSULTANT fails to submit the required</div>
-          </div>
-        
-          <div class="clause-item" id="c3">
-            <div class="clause-header">
-              Clause c3
-            </div>
-            <div class="clause-content">Page 2 
+will be included in the monthly progress payments. If CONSULTANT fails to submit the required</pre>
+  </li>
+
+  <li id="c3">
+    <pre>c3: Page 2 
 deliverable items according to the schedule set forth in the Scope of Services, the COMMISSION may 
 delay payment and/or terminate this Agreement in accordance with the provisions of Section 4 of this 
 Agreement.  
@@ -493,14 +322,11 @@ information as requested by COMMISSION.
 CONSULTANT's final invoice must be submitted within 60-calendar days after 
 acceptance of the CONSULTANT’s work by the Contract Manager.  
  
-I.  For personnel subject to prevailing wage rates as described in</div>
-          </div>
-        
-          <div class="clause-item" id="c4">
-            <div class="clause-header">
-              Clause c4
-            </div>
-            <div class="clause-content"> the California Labor Code, all salary 
+I.  For personnel subject to prevailing wage rates as described in</pre>
+  </li>
+
+  <li id="c4">
+    <pre>c4:  the California Labor Code, all salary 
 increases, which are the direct result of changes in the prevailing wage rates are reimbursable. 
  
 3. 
@@ -520,14 +346,11 @@ reasonably necessary to effect such termination.  Thereafter, CONSULTANT shall h
 claims against COMMISSION under this Agreement. 
  
 B. COMMISSION may terminate this Agreement for CONSULTANT's default if a federal or state 
-proceeding for the relief of debtors is undertaken by or against CONSULTANT, or CONSULTANT's</div>
-          </div>
-        
-          <div class="clause-item" id="c5">
-            <div class="clause-header">
-              Clause c5
-            </div>
-            <div class="clause-content">Page 3 
+proceeding for the relief of debtors is undertaken by or against CONSULTANT, or CONSULTANT's</pre>
+  </li>
+
+  <li id="c5">
+    <pre>c5: Page 3 
 principal, or if CONSULTANT or CONSULTANT's principal makes an assignment for the benefit of 
 creditors, or if CONSULTANT breaches any term(s) or violates any provision(s) of this Agreement and 
 does not cure such breach or violation within ten (10) days after written notice thereof by 
@@ -553,14 +376,11 @@ any damage to the person(s), or property(ies) of CONSULTANT and third persons.
  
 B. Any and all Federal, State and Local taxes, charges, fees, or contributions required to be paid with 
 respect to CONSULTANT and CONSULTANT’S officers, employees and agents engaged in the 
-performance of this Agreement (including, without limitation, unemployment insurance, social</div>
-          </div>
-        
-          <div class="clause-item" id="c6">
-            <div class="clause-header">
-              Clause c6
-            </div>
-            <div class="clause-content"> security 
+performance of this Agreement (including, without limitation, unemployment insurance, social</pre>
+  </li>
+
+  <li id="c6">
+    <pre>c6:  security 
 and payroll tax withholding). 
  
 6. INSURANCE. CONSULTANT, at its sole cost and expense, for the full term of this Agreement, and any 
@@ -585,14 +405,11 @@ this Agreement, including owned, non-owned (e.g. owned by CONSULTANT’S employe
 or hired vehicles, in the minimum amount of $1,000,000 combined single limit per occurrence for 
 bodily injury and property damage.  This insurance coverage shall not be required if vehicle use by 
 the CONSULTANT is not a material part of performance of this Agreement and CONSULTANT and 
-COMMISSION both certify to this fact by initialing here           /        .</div>
-          </div>
-        
-          <div class="clause-item" id="c7">
-            <div class="clause-header">
-              Clause c7
-            </div>
-            <div class="clause-content">Page 4 
+COMMISSION both certify to this fact by initialing here           /        .</pre>
+  </li>
+
+  <li id="c7">
+    <pre>c7: Page 4 
 3) Comprehensive or Commercial General Liability Insurance coverage in the minimum amount of one 
 million dollars ($1,000,000) combined single limit (CSL), including coverage for: (a) bodily injury, 
 (b) personal injury, (c) broad form property damage, (d) contractual liability, and (e) cross-liability. 
@@ -620,14 +437,11 @@ endorsed to contain the following clause:
 volunteers are added as an additional insured as respects the operations and activities of, or on behalf 
 of, the named insured performed under Agreement with the Commission.” 
  
-3) All required insurance policies shall be endorsed to</div>
-          </div>
-        
-          <div class="clause-item" id="c8">
-            <div class="clause-header">
-              Clause c8
-            </div>
-            <div class="clause-content"> contain the following clause: 
+3) All required insurance policies shall be endorsed to</pre>
+  </li>
+
+  <li id="c8">
+    <pre>c8:  contain the following clause: 
 “This insurance shall not be canceled until after thirty (30) days prior written notice has been given 
 to:  
  
@@ -672,14 +486,11 @@ during the term of this contract, the CONSULTANT agrees to provide at least thir
 notice to said expiration date; and a new Certificate of Insurance evidencing insurance coverage as 
 provided for herein, for not less than either the remainder of the term of the contract, or for a period 
 of not less than one (1) year. New Certificates of Insurance are subject to the approval of the 
-COMMISSION.  In the event the CONSULTANT fails to keep in effect at all times insurance</div>
-          </div>
-        
-          <div class="clause-item" id="c9">
-            <div class="clause-header">
-              Clause c9
-            </div>
-            <div class="clause-content">Page 5 
+COMMISSION.  In the event the CONSULTANT fails to keep in effect at all times insurance</pre>
+  </li>
+
+  <li id="c9">
+    <pre>c9: Page 5 
 coverage as herein provided, the COMMISSION may, in addition to any other remedies it may have, 
 terminate this Agreement  upon occurrence of such event. 
  
@@ -706,14 +517,11 @@ Agreement, it shall exercise usual and customary professional care in its effort
 federal, state and local laws, statutes and ordinances and all lawful orders, rules and regulations promulgated 
 thereunder.  In the event of a conflict between the laws and lawful regulations of any government entities 
 having jurisdiction over the project, the CONSULTANT shall notify COMMISSION of the nature and 
-impact o</div>
-          </div>
-        
-          <div class="clause-item" id="c10">
-            <div class="clause-header">
-              Clause c10
-            </div>
-            <div class="clause-content">f such conflict.  The COMMISSION agrees to cooperate and work with the CONSULTANT in an 
+impact o</pre>
+  </li>
+
+  <li id="c10">
+    <pre>c10: f such conflict.  The COMMISSION agrees to cooperate and work with the CONSULTANT in an 
 effort to resolve any conflict. 
  
 8. EQUAL EMPLOYMENT OPPORTUNITY. During and in relation to the performance of this Agreement, 
@@ -735,14 +543,11 @@ CONSULTANT shall comply fully with all federal, State and local laws and regulat
 discrimination.  The CONSULTANT’s signature affixed herein, and dated, shall constitute a certification 
 under penalty of perjury under the laws of the State of California that the CONSULTANT has, unless 
 exempt, complied with, the nondiscrimination program requirements of Government Code Section 12990 and 
-Title 2, California Administrative Code, Section 8103.</div>
-          </div>
-        
-          <div class="clause-item" id="c11">
-            <div class="clause-header">
-              Clause c11
-            </div>
-            <div class="clause-content">Page 6 
+Title 2, California Administrative Code, Section 8103.</pre>
+  </li>
+
+  <li id="c11">
+    <pre>c11: Page 6 
 In the event of CONSULTANT’S non-compliance with the non-discrimination clauses of this Agreement or 
 with any of the said rules, regulations or orders the COMMISSION may cancel, terminate or suspend the 
 Agreement in whole or in part. CONSULTANT may also be declared ineligible for further agreements with 
@@ -771,14 +576,11 @@ manner and means of accomplishing the result contracted for herein.
 PRINCIPAL TEST: The CONSULTANT rather than COMMISSION has the right to control the manner and 
 means of accomplishing the result contracted for. 
  
-SECONDARY FACTORS: (a) The extent of control wh</div>
-          </div>
-        
-          <div class="clause-item" id="c12">
-            <div class="clause-header">
-              Clause c12
-            </div>
-            <div class="clause-content">ich, by agreement, COMMISSION may exercise 
+SECONDARY FACTORS: (a) The extent of control wh</pre>
+  </li>
+
+  <li id="c12">
+    <pre>c12: ich, by agreement, COMMISSION may exercise 
 over the details of the work is slight rather than substantial; (b) CONSULTANT is engaged in a distinct 
 occupation or business; (c) In the locality, the work to be done by CONSULTANT is usually done by a 
 specialist without supervision, rather than under the direction of an employer; (d) The skill required in the 
@@ -801,21 +603,15 @@ judgment that the CONSULTANT engaged under this Agreement is in fact an independ
 Contract Code 10115, et seq. and Title 21, California Code of Regulations, Chapter 21, Section 2500 et seq., 
 if applicable and other matters connected with the performance of the contract pursuant to Government Code 
 8546.7: CONSULTANT, subconsultants, and the COMMISSION shall maintain all books, documents, 
-papers, accounting records, and other evidence pertaining to the performance of the contract, inclu</div>
-          </div>
-        
-          <div class="clause-item" id="c13">
-            <div class="clause-header">
-              Clause c13
-            </div>
-            <div class="clause-content">ding but</div>
-          </div>
-        
-          <div class="clause-item" id="c14">
-            <div class="clause-header">
-              Clause c14
-            </div>
-            <div class="clause-content">Page 7 
+papers, accounting records, and other evidence pertaining to the performance of the contract, inclu</pre>
+  </li>
+
+  <li id="c13">
+    <pre>c13: ding but</pre>
+  </li>
+
+  <li id="c14">
+    <pre>c14: Page 7 
 not limited to, the costs of administering the Agreement.  All parties shall make such materials available at 
 their respective offices at all reasonable times during the Agreement  period and for five (5) years from the 
 date of final payment under this Agreement or until a final audit report is accepted by COMMISSION, 
@@ -840,14 +636,11 @@ publish, display, and make derivative use of all such work, or any part of it, f
 and for any purpose; and to authorize others to do so.  If any of the work is subject to copyright, trademark, 
 service mark, or patent, CONSULTANT now grants to the COMMISSION a perpetual, royalty-free, 
 nonexclusive and irrevocable license to use, reproduce, publish, use in the creation of derivative works, and 
-display and perform the work, or any part of it, and to grant to any third party a comparable and coex</div>
-          </div>
-        
-          <div class="clause-item" id="c15">
-            <div class="clause-header">
-              Clause c15
-            </div>
-            <div class="clause-content">tensive 
+display and perform the work, or any part of it, and to grant to any third party a comparable and coex</pre>
+  </li>
+
+  <li id="c15">
+    <pre>c15: tensive 
 sublicense. 
   
 CONSULTANT shall include in any subcontract with a third party for work under this Agreement terms that 
@@ -871,14 +664,11 @@ Agreement may be used by CONSULTANT for any purpose (internal or external), nor 
 information be discussed with others without the prior written consent of COMMISSION. 
  
 B. Any subcontract in excess of $25,000 entered into as a result of this contract, shall contain all of the 
-provisions of this Section.</div>
-          </div>
-        
-          <div class="clause-item" id="c16">
-            <div class="clause-header">
-              Clause c16
-            </div>
-            <div class="clause-content">Page 8 
+provisions of this Section.</pre>
+  </li>
+
+  <li id="c16">
+    <pre>c16: Page 8 
 16. SAFETY 
 A. The CONSULTANT shall comply with OSHA regulations applicable to CONSULTANT regarding 
 necessary safety equipment or procedures.  The CONSULTANT shall comply with safety instructions 
@@ -906,14 +696,11 @@ D. No oral understanding or agreement not incorporated herein shall be binding o
 resolution of a dispute hereunder, CONSULTANT shall proceed diligently with the performance of this 
 Agreement and shall comply with COMMISSION’s instructions. 
 A. Any dispute, other than audit, concerning a question of fact arising under this Agreement that is not 
-disposed of by agreement shall be decided by a </div>
-          </div>
-        
-          <div class="clause-item" id="c17">
-            <div class="clause-header">
-              Clause c17
-            </div>
-            <div class="clause-content">committee consisting of the COMMISSION’s Contract 
+disposed of by agreement shall be decided by a </pre>
+  </li>
+
+  <li id="c17">
+    <pre>c17: committee consisting of the COMMISSION’s Contract 
 Manager and Executive Director, who shall consider written or verbal information submitted by the 
 CONSULTANT. 
 B. Not later than 30 days after completion of all deliverables necessary to complete the plans, specifications 
@@ -936,14 +723,11 @@ CONSULTANT from full and timely performance, in accordance with the terms of thi
 A. The CONSULTANT shall perform the work contemplated with resources available within its own 
 organization; and no portion of the work pertinent to this Agreement shall be subcontracted without prior 
 written authorization by the COMMISSION’S Contract Manager, except that, which is expressly 
-identified in the approved Fee Schedule.</div>
-          </div>
-        
-          <div class="clause-item" id="c18">
-            <div class="clause-header">
-              Clause c18
-            </div>
-            <div class="clause-content">Page 9 
+identified in the approved Fee Schedule.</pre>
+  </li>
+
+  <li id="c18">
+    <pre>c18: Page 9 
 B. Any subcontract in excess of $25,000 entered into as a result of this contract, shall contain all the 
 provisions required by this Agreement to be applicable to those subconsultants. 
 C. No substitution of subconsultants shall be valid until approved in writing by the COMMISSION’s 
@@ -992,14 +776,11 @@ Luis Mendez, Contract Manager
 A. AGREEMENT: The two parties to this Agreement, who are the before named CONSULTANT and the 
 before named COMMISSION, hereby agree that this Agreement constitutes the entire Agreement which 
 is made and concluded in duplicate between the two parties. Both of these parties for and in consideration 
-of the payments to made, conditions mentioned, and work to b</div>
-          </div>
-        
-          <div class="clause-item" id="c19">
-            <div class="clause-header">
-              Clause c19
-            </div>
-            <div class="clause-content">e performed; each agree to diligently 
+of the payments to made, conditions mentioned, and work to b</pre>
+  </li>
+
+  <li id="c19">
+    <pre>c19: e performed; each agree to diligently 
 perform in accordance with the terms and conditions of this Agreement as evidenced by the signatures 
 below.  
  
@@ -1018,14 +799,11 @@ term(s) or conditions(s
  
 D. Attachments are: 
  
-Exhibit A: Scope of Services</div>
-          </div>
-        
-          <div class="clause-item" id="c20">
-            <div class="clause-header">
-              Clause c20
-            </div>
-            <div class="clause-content">Page 10 
+Exhibit A: Scope of Services</pre>
+  </li>
+
+  <li id="c20">
+    <pre>c20: Page 10 
  
 Exhibit B: Fee Schedule 
  
@@ -1095,15 +873,10 @@ DISTRIBUTION:
  
 CONSULTANT 
  
-\\Rtcserv2\shared\CONTRACT\MASTERCO\Template\MasterContracts.doc</div>
-          </div>
-        
-      </div>
-    </div>
+\\Rtcserv2\shared\CONTRACT\MASTERCO\Template\MasterContracts.doc</pre>
+  </li>
 
-    <footer>
-      <p>Generated by AI Legal Analyzer • Report created on current date</p>
-    </footer>
-  </div>
+</ol>
+
 </body>
 </html>

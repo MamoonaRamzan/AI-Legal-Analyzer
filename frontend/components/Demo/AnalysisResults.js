@@ -69,51 +69,85 @@ export default function AnalysisResults({ results }) {
 
         {/* Risk Flags Section */}
         {results.flags && results.flags.length > 0 && (
-          <div className="flags-section">
-            <div className="flags-header">
-              <div className="flags-title">
-                <AlertTriangle className="w-5 h-5 text-yellow-400" />
-                <h5 className="section-title">Risk Flags</h5>
-                <span className="flags-badge">{results.flags.length}</span>
+  <div className="flags-section">
+    <div className="flags-header">
+      <div className="flags-title">
+        <AlertTriangle className="w-5 h-5 text-yellow-400" />
+        <h5 className="section-title">Risk Flags</h5>
+        <span className="flags-badge">{results.flags.length}</span>
+      </div>
+      {results.flags.length > 3 && (
+        <button
+          onClick={() => setExpandedFlags(!expandedFlags)}
+          className="expand-button"
+        >
+          <Eye className="w-4 h-4" />
+          {expandedFlags ? 'Show Less' : 'Show All'}
+        </button>
+      )}
+    </div>
+
+    <div className="flags-list">
+      {(expandedFlags ? results.flags : results.flags.slice(0, 3)).map((flag, i) => (
+        <div key={i} className="flag-item">
+          <div className="flag-content">
+            <div className="flag-header">
+              <span className="flag-clause-id">{flag.clause_id}</span>
+              <span className="flag-tag">{flag.tag}</span>
+            </div>
+
+            {/* New Details Section */}
+            {flag.match && (
+              <p className="flag-description">
+                <strong>Clause Snippet:</strong> {flag.match}
+              </p>
+            )}
+            {flag.impact && (
+              <p className="flag-detail">
+                <strong>Impact:</strong> {flag.impact}
+              </p>
+            )}
+            {flag.likelihood && (
+              <p className="flag-detail">
+                <strong>Likelihood:</strong> {flag.likelihood}
+              </p>
+            )}
+            {flag.factors && flag.factors.length > 0 && (
+              <div className="flag-detail">
+                <strong>Contributing Factors:</strong>
+                <ul className="list-disc pl-5">
+                  {flag.factors.map((f, idx) => (
+                    <li key={idx}>{f}</li>
+                  ))}
+                </ul>
               </div>
-              {results.flags.length > 3 && (
-                <button
-                  onClick={() => setExpandedFlags(!expandedFlags)}
-                  className="expand-button"
-                >
-                  <Eye className="w-4 h-4" />
-                  {expandedFlags ? 'Show Less' : 'Show All'}
-                </button>
-              )}
-            </div>
-
-            <div className="flags-list">
-              {(expandedFlags ? results.flags : results.flags.slice(0, 3)).map((flag, i) => (
-                <div key={i} className="flag-item">
-                  <div className="flag-content">
-                    <div className="flag-header">
-                      <span className="flag-clause-id">{flag.clause_id}</span>
-                      <span className="flag-tag">{flag.tag}</span>
-                    </div>
-                    {flag.description && (
-                      <p className="flag-description">{flag.description}</p>
-                    )}
-                  </div>
-                  <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
-                </div>
-              ))}
-            </div>
-
-            {!expandedFlags && results.flags.length > 3 && (
-              <div className="flags-more">
-                <span className="more-text">
-                  {results.flags.length - 3} more flag{results.flags.length - 3 !== 1 ? 's' : ''} available
-                </span>
+            )}
+            {flag.mitigation && flag.mitigation.length > 0 && (
+              <div className="flag-detail">
+                <strong>Mitigation Strategies:</strong>
+                <ul className="list-disc pl-5">
+                  {flag.mitigation.map((m, idx) => (
+                    <li key={idx}>{m}</li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
-        )}
 
+          <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
+        </div>
+      ))}
+    </div>
+
+    {!expandedFlags && results.flags.length > 3 && (
+      <div className="flags-more">
+        <span className="more-text">
+          {results.flags.length - 3} more flag{results.flags.length - 3 !== 1 ? 's' : ''} available
+        </span>
+      </div>
+    )}
+  </div>
+)}
         {/* No Flags Message */}
         {(!results.flags || results.flags.length === 0) && (
           <div className="no-flags-section">
